@@ -6,7 +6,6 @@ import menu.model.Coach
 import menu.model.Menu
 
 object MenuService {
-    private val recommendMenus = mutableListOf<Menu>()
     private val usedCategory = MutableList(6) { _ -> 0 } // 각 카테고리 별 사용 횟수
 
     fun isExistedMenu(menuName: String) = menuName in Category.values().map { it.foods }.flatten()
@@ -20,11 +19,11 @@ object MenuService {
     }
 
     fun recommendMenuToCoaches(coaches: List<Coach>) {
-        val randomCategories = mutableListOf<Int>()
-        repeat(5) { randomCategories += getRandomCategory() }
-
-        coaches.forEach { coach ->
-            coach.weeklyMenus = randomCategories.map { createMenuForCoach(it, coach) }
+        repeat(5) {
+            val randomNumber = getRandomCategory()
+            coaches.forEach { coach ->
+                coach.weeklyMenus += createMenuForCoach(randomNumber, coach)
+            }
         }
     }
 
@@ -41,7 +40,7 @@ object MenuService {
     private fun createMenuForCoach(randomCategory: Int, coach: Coach): Menu {
         var selectedMenu = Randoms.shuffle(Category.values()[randomCategory - 1].foods)[0]
         // 이미 추천한 메뉴거나 싫어하는 메뉴인 동안 재설정
-        while (selectedMenu in recommendMenus.map { it.name } || selectedMenu in coach.dislikedMenus.map { it.name }) {
+        while (selectedMenu in coach.weeklyMenus.map { it.name } || selectedMenu in coach.dislikedMenus.map { it.name }) {
             selectedMenu = Randoms.shuffle(Category.values()[randomCategory - 1].foods)[0]
         }
 
