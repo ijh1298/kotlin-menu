@@ -16,6 +16,7 @@ class MenuController(
     private lateinit var coaches: List<Coach>
 
     fun run() {
+        outputView.printStartMessage()
         setCoaches()
         setDislikedMenusForAll()
         MenuService.recommendMenuToCoaches(coaches)
