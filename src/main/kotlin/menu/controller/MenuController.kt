@@ -2,6 +2,7 @@ package menu.controller
 
 import menu.model.Coach
 import menu.model.Menu
+import menu.service.MenuService
 import menu.service.ParsingService
 import menu.validator.CoachNameValidator
 import menu.validator.InputMenuValidator
@@ -11,11 +12,16 @@ class MenuController(
     private val inputView: InputView = InputView(),
 ) {
     private lateinit var coaches: List<Coach>
-    private lateinit var menus: List<Menu>
+    private lateinit var recommendMenus: List<List<Menu>>
 
     fun run() {
         setCoaches()
         setDislikedMenusForAll()
+        setRecommendedMenus()
+    }
+
+    private fun setRecommendedMenus() {
+        recommendMenus = MenuService.createWeeklyMenu(coaches)
     }
 
     private fun setCoaches() {
