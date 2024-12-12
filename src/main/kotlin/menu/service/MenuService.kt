@@ -24,7 +24,7 @@ object MenuService {
         repeat(5) { randomCategories += getRandomCategory() }
 
         coaches.forEach { coach ->
-            coach.setWeeklyMenus(randomCategories.map { createMenuForCoach(it, coach) })
+            coach.weeklyMenus = randomCategories.map { createMenuForCoach(it, coach) }
         }
     }
 

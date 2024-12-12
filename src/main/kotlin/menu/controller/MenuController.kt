@@ -44,7 +44,7 @@ class MenuController(
             InputMenuValidator(inputDislikedMenus).validate()
         }
         val dislikedMenus = ParsingService.stringToMenus(inputDislikedMenus)
-        coach.setDislikedMenus(dislikedMenus)
+        coach.dislikedMenus = dislikedMenus
     }
 
     // 반복 입력받는 로직

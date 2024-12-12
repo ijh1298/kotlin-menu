@@ -4,5 +4,5 @@ import menu.controller.MenuController
 import menu.view.InputView
 
 fun main() {
-    MenuController(InputView()).run()
+    MenuController().run()
 }
