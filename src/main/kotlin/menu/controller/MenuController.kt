@@ -33,13 +33,14 @@ class MenuController(
         }
     }
 
-    private fun setDislikedMenusForOne(coach: Coach): List<Menu> {
+    private fun setDislikedMenusForOne(coach: Coach) {
         var inputDislikedMenus = ""
         loopUntilValid {
             inputDislikedMenus = inputView.inputDislikedMenus(coach.name)
             InputMenuValidator(inputDislikedMenus).validate()
         }
-        return ParsingService.stringToMenus(inputDislikedMenus)
+        val dislikedMenus = ParsingService.stringToMenus(inputDislikedMenus)
+        coach.setDislikedMenus(dislikedMenus)
     }
 
     // 반복 입력받는 로직
