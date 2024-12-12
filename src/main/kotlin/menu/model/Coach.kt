@@ -8,4 +8,8 @@ data class Coach(
     fun setDislikedMenus(menus: List<Menu>) {
         dislikedMenus = menus
     }
+
+    fun setWeeklyMenus(menus: List<Menu>) {
+        weeklyMenus = menus
+    }
 }

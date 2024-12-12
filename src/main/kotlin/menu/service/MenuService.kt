@@ -19,19 +19,13 @@ object MenuService {
         return "양식"
     }
 
-    fun createWeeklyMenu(coaches: List<Coach>): List<List<Menu>> {
+    fun recommendMenuToCoaches(coaches: List<Coach>) {
         val randomCategories = mutableListOf<Int>()
         repeat(5) { randomCategories += getRandomCategory() }
 
-        val weeklyMenu = mutableListOf<List<Menu>>()
-        randomCategories.forEach { category ->
-            val weeklyMenuEach = mutableListOf<Menu>()
-            coaches.forEach { coach ->
-                weeklyMenuEach += createMenuForCoach(category, coach)
-            }
-            weeklyMenu += weeklyMenuEach
+        coaches.forEach { coach ->
+            coach.setWeeklyMenus(randomCategories.map { createMenuForCoach(it, coach) })
         }
-        return weeklyMenu
     }
 
     private fun getRandomCategory(): Int {
