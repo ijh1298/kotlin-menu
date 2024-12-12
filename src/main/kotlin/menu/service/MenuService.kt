@@ -30,7 +30,7 @@ object MenuService {
 
     private fun getRandomCategory(): Int {
         var randomCategory = Randoms.pickNumberInRange(1, 5)
-        while (usedCategory[randomCategory] > 2) { // 두 번 이상 사용한 카테고리인 동안 재설정
+        while (usedCategory[randomCategory] >= 2) { // 두 번 이상 사용한 카테고리인 동안 재설정
             randomCategory = Randoms.pickNumberInRange(1, 5)
         }
         ++usedCategory[randomCategory]
@@ -39,12 +39,12 @@ object MenuService {
     }
 
     private fun createMenuForCoach(randomCategory: Int, coach: Coach): Menu {
-        var selectedMenu = Randoms.shuffle(Category.values()[randomCategory].foods)[0]
+        var selectedMenu = Randoms.shuffle(Category.values()[randomCategory - 1].foods)[0]
         // 이미 추천한 메뉴거나 싫어하는 메뉴인 동안 재설정
         while (selectedMenu in recommendMenus.map { it.name } || selectedMenu in coach.dislikedMenus.map { it.name }) {
-            selectedMenu = Randoms.shuffle(Category.values()[randomCategory].foods)[0]
+            selectedMenu = Randoms.shuffle(Category.values()[randomCategory - 1].foods)[0]
         }
 
-        return Menu(selectedMenu, Category.values()[randomCategory].name)
+        return Menu(selectedMenu, Category.values()[randomCategory - 1].name)
     }
 }

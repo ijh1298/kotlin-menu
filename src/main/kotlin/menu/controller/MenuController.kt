@@ -43,6 +43,7 @@ class MenuController(
             inputDislikedMenus = inputView.inputDislikedMenus(coach.name)
             InputMenuValidator(inputDislikedMenus).validate()
         }
+        if (inputDislikedMenus.isEmpty()) return
         val dislikedMenus = ParsingService.stringToMenus(inputDislikedMenus)
         coach.dislikedMenus = dislikedMenus
     }
