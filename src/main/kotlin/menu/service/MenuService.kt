@@ -1,20 +1,56 @@
 package menu.service
 
-object MenuService {
-    private val 일식 = listOf("규동", "우동", "미소시루", "스시", "가츠동", "오니기리", "하이라이스", "라멘", "오코노미야끼")
-    private val 한식 = listOf("김밥", "김치찌개", "쌈밥", "된장찌개", "비빔밥", "칼국수", "불고기", "떡볶이", "제육볶음")
-    private val 중식 = listOf("깐풍기", "볶음면", "동파육", "짜장면", "짬뽕", "마파두부", "탕수육", "토마토 달걀볶음", "고추잡채")
-    private val 아시안 = listOf("팟타이", "카오 팟", "나시고렝", "파인애플 볶음밥", "쌀국수", "똠얌꿍", "반미", "월남쌈", "분짜")
-    private val 양식 = listOf("라자냐", "그라탱", "뇨끼", "끼슈", "프렌치 토스트", "바게트", "스파게티", "피자", "파니니")
+import camp.nextstep.edu.missionutils.Randoms
+import menu.model.Category
+import menu.model.Coach
+import menu.model.Menu
 
-    fun isExistedMenu(menuName: String) =
-        menuName in 일식 || menuName in 한식 || menuName in 중식 || menuName in 아시안 || menuName in 양식
+object MenuService {
+    private val recommendMenus = mutableListOf<Menu>()
+    private val usedCategory = MutableList(6) { _ -> 0 } // 각 카테고리 별 사용 횟수
+
+    fun isExistedMenu(menuName: String) = menuName in Category.values().map { it.foods }.flatten()
 
     fun getCategoryByName(name: String): String {
-        if (name in 일식) return "일식"
-        if (name in 한식) return "한식"
-        if (name in 중식) return "중식"
-        if (name in 아시안) return "아시안"
+        if (name in Category.일식.foods) return "일식"
+        if (name in Category.한식.foods) return "한식"
+        if (name in Category.중식.foods) return "중식"
+        if (name in Category.아시안.foods) return "아시안"
         return "양식"
+    }
+
+    fun createWeeklyMenu(coaches: List<Coach>): List<List<Menu>> {
+        val randomCategories = mutableListOf<Int>()
+        repeat(5) { randomCategories += getRandomCategory() }
+
+        val weeklyMenu = mutableListOf<List<Menu>>()
+        randomCategories.forEach { category ->
+            val weeklyMenuEach = mutableListOf<Menu>()
+            coaches.forEach { coach ->
+                weeklyMenuEach += createMenuForCoach(category, coach)
+            }
+            weeklyMenu += weeklyMenuEach
+        }
+        return weeklyMenu
+    }
+
+    private fun getRandomCategory(): Int {
+        var randomCategory = Randoms.pickNumberInRange(1, 5)
+        while (usedCategory[randomCategory] > 2) { // 두 번 이상 사용한 카테고리인 동안 재설정
+            randomCategory = Randoms.pickNumberInRange(1, 5)
+        }
+        ++usedCategory[randomCategory]
+
+        return randomCategory
+    }
+
+    private fun createMenuForCoach(randomCategory: Int, coach: Coach): Menu {
+        var selectedMenu = Randoms.shuffle(Category.values()[randomCategory].foods)[0]
+        // 이미 추천한 메뉴거나 싫어하는 메뉴인 동안 재설정
+        while (selectedMenu in recommendMenus.map { it.name } || selectedMenu in coach.dislikedMenus.map { it.name }) {
+            selectedMenu = Randoms.shuffle(Category.values()[randomCategory].foods)[0]
+        }
+
+        return Menu(selectedMenu, Category.values()[randomCategory].name)
     }
 }
