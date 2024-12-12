@@ -15,6 +15,7 @@ class MenuController(
 
     fun run() {
         setCoaches()
+        setDislikedMenusForAll()
     }
 
     private fun setCoaches() {
@@ -24,6 +25,21 @@ class MenuController(
             CoachNameValidator(inputCoaches).validate()
         }
         coaches = ParsingService.stringToCoaches(inputCoaches)
+    }
+
+    private fun setDislikedMenusForAll() {
+        coaches.forEach {
+            setDislikedMenusForOne(it)
+        }
+    }
+
+    private fun setDislikedMenusForOne(coach: Coach): List<Menu> {
+        var inputDislikedMenus = ""
+        loopUntilValid {
+            inputDislikedMenus = inputView.inputDislikedMenus(coach.name)
+            InputMenuValidator(inputDislikedMenus).validate()
+        }
+        return ParsingService.stringToMenus(inputDislikedMenus)
     }
 
     // 반복 입력받는 로직
