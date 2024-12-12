@@ -6,6 +6,6 @@ data class Coach(
     var weeklyMenus: List<Menu> = emptyList()
 ) {
     fun weeklyMenusToString(): String {
-        return "[ $name | ${weeklyMenus.map { it.name }.joinToString { " | " }} ]"
+        return "[ $name | ${weeklyMenus.joinToString(" | ") { it.name }} ]"
     }
 }
