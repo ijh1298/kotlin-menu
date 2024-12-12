@@ -9,4 +9,12 @@ object MenuService {
 
     fun isExistedMenu(menuName: String) =
         menuName in 일식 || menuName in 한식 || menuName in 중식 || menuName in 아시안 || menuName in 양식
+
+    fun getCategoryByName(name: String): String {
+        if (name in 일식) return "일식"
+        if (name in 한식) return "한식"
+        if (name in 중식) return "중식"
+        if (name in 아시안) return "아시안"
+        return "양식"
+    }
 }
