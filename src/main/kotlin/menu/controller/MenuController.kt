@@ -7,21 +7,19 @@ import menu.service.ParsingService
 import menu.validator.CoachNameValidator
 import menu.validator.InputMenuValidator
 import menu.view.InputView
+import menu.view.OutputView
 
 class MenuController(
     private val inputView: InputView = InputView(),
+    private val outputView: OutputView = OutputView()
 ) {
     private lateinit var coaches: List<Coach>
-    private lateinit var recommendMenus: List<List<Menu>>
 
     fun run() {
         setCoaches()
         setDislikedMenusForAll()
-        setRecommendedMenus()
-    }
-
-    private fun setRecommendedMenus() {
-        recommendMenus = MenuService.createWeeklyMenu(coaches)
+        MenuService.recommendMenuToCoaches(coaches)
+        outputView.printResult(coaches)
     }
 
     private fun setCoaches() {
