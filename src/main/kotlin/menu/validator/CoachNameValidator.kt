@@ -8,10 +8,11 @@ class CoachNameValidator(
 ) {
     private lateinit var parsedCoachNames: List<String>
 
-    fun validate() {
+    fun validate(): Boolean {
         parsedCoachNames = ParsingService.splitByComma(inputCoachNames)
         require(isNameInRange()) { Error.COACH_NAME_NOT_IN_RANGE.msg }
         require(isHeadcountInRange()) { Error.COACH_HEADCOUNT_NOT_IN_RANGE.msg }
+        return true
     }
 
     private fun isNameInRange() = parsedCoachNames.all { it.length in 2..4 }
