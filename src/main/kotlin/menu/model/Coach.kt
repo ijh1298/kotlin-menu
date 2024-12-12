@@ -12,4 +12,8 @@ data class Coach(
     fun setWeeklyMenus(menus: List<Menu>) {
         weeklyMenus = menus
     }
+
+    fun weeklyMenusToString(): String {
+        return "[ $name | ${weeklyMenus.map { it.name }.joinToString { " | " }} ]"
+    }
 }
