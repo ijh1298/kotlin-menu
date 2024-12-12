@@ -2,6 +2,7 @@ package menu.model
 
 data class Coach(
     val name: String,
-    val dislikedMenus: List<Menu>,
-    val weeklyMenus: List<Menu>
-)
+    var dislikedMenus: List<Menu> = emptyList(),
+    var weeklyMenus: List<Menu> = emptyList()
+) {
+}
