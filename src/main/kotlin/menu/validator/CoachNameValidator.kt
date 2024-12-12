@@ -1,14 +1,15 @@
 package menu.validator
 
+import menu.service.ParsingService
 import menu.utils.Error
 
 class CoachNameValidator(
-    private val rawCoachNames: String
+    private val inputCoachNames: String
 ) {
     private lateinit var parsedCoachNames: List<String>
 
     fun validate() {
-        parsedCoachNames = rawCoachNames.split(',').map { it }
+        parsedCoachNames = ParsingService.splitByComma(inputCoachNames)
         require(isNameInRange()) { Error.COACH_NAME_NOT_IN_RANGE.msg }
         require(isHeadcountInRange()) { Error.COACH_HEADCOUNT_NOT_IN_RANGE.msg }
     }
